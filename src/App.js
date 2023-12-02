@@ -4,7 +4,8 @@ import * as StompJS from '@stomp/stompjs';
 function App() {
   
   const client = useRef(null);
-  
+  const subscription = useRef(null);
+
   useEffect(() => {
     client.current = new StompJS.Client({
       brokerURL: 'wss://8080-yoonchaejin-websocketbi-e6fvsf7vzi8.ws-us106.gitpod.io/connect-websocket',
@@ -15,16 +16,16 @@ function App() {
     client.current.onConnect = (frame) => {
       console.log("Connected");
       console.log(frame);
+
+      subscription.current = client.current.subscribe('/topic/bingo', (message) => {
+        alert(" Received Message" + message.body);
+      });
     };
 
     client.current.onStompError = (frame) => {
       console.log("Error");
       console.log(frame);
     }
-
-    // const receiveMessage = client.current.subscribe('/topic/bingo', () => {
-
-    // });
   }, []);
 
   const sendReady = () => {
@@ -36,7 +37,7 @@ function App() {
 
   const sendItem = () => {
     const item = {
-      // empNo: "00000",
+      empNo: "00000",
       name: "홍길동"
     };
 
@@ -54,7 +55,6 @@ function App() {
       destination: '/app/shout-bingo'
     });
   };
-
 
   return (
     <div className="App">
