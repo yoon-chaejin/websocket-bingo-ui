@@ -1,10 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import * as StompJS from '@stomp/stompjs';
+import Bingo from './component/Bingo.js';
 
 function App() {
-  
+
   const [step, setStep] = useState(0); // 진행 단계를 의미 (0: 접속 전, 1: 빙고판 제작, 2: 게임 진행, 3: 게임 종료)
-  const [player, setPlayer] = useState({empNo : '', name : ''});
+  const [player, setPlayer] = useState({ empNo: '', name: '' });
 
   const client = useRef(null);
   const subscription = useRef(null);
@@ -13,9 +14,9 @@ function App() {
     client.current = new StompJS.Client({
       brokerURL: 'wss://8080-yoonchaejin-websocketbi-e6fvsf7vzi8.ws-us106.gitpod.io/connect-websocket',
     });
-    
+
     client.current.activate();
-    
+
     client.current.onConnect = (frame) => {
       console.log("Connected");
       console.log(frame);
@@ -68,7 +69,7 @@ function App() {
 
     console.log("Random Player : " + empNo + " / " + name);
 
-    return {empNo, name};
+    return { empNo, name };
   };
 
   const registerPlayer = (player) => {
@@ -113,16 +114,22 @@ function App() {
 
   return (
     <div className="App">
-        <h1>Bingo by SongChuWe</h1>
-        {step === 0 ? <button onClick={connect}>접속</button> : ''}
-        {step === 1 ? <button onClick={sendReady}>준비</button> : ''}
-        {step === 2 ? 
-          <>
-            <button onClick={sendItem}>선택</button>
-            <button onClick={sendBingo}>빙고</button>
-          </>
+      <h1>Bingo by SongChuWe</h1>
+      {step === 0 ? <button onClick={connect}>접속</button> : ''}
+      {step === 1 ?
+        <>
+          <button onClick={sendReady}>준비</button>
+          <Bingo />
+        </>
         : ''}
-        {step === 3 ? "게임이 종료되었습니다." : ''}
+      {step === 2 ?
+        <>
+          <button onClick={sendItem}>선택</button>
+          <button onClick={sendBingo}>빙고</button>
+          <Bingo />
+        </>
+        : ''}
+      {step === 3 ? "게임이 종료되었습니다." : ''}
     </div>
   );
 }
