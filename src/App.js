@@ -38,6 +38,8 @@ function App() {
 
       subscription.current = client.current.subscribe('/topic/shout-bingo', (message) => {
         alert(" Received Message : Bingo " + message.body);
+
+        setStep(3);
       });
     };
 
@@ -95,8 +97,6 @@ function App() {
       destination: '/app/shout-bingo',
       body: "우승자"
     });
-
-    setStep(3);
   };
 
   return (
