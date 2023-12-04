@@ -40,12 +40,23 @@ function App() {
         alert(" Received Message : Bingo " + message.body);
 
         setStep(3);
+        client.current.deactivate();
       });
     };
 
     client.current.onStompError = (frame) => {
       console.log("Error");
       console.log(frame);
+    }
+
+    client.current.onDisconnect = (frame) => {
+      console.log("Disconnected");
+      console.log(frame);
+    }
+
+    client.current.onWebSocketClose = (event) => {
+      console.log("WebSocket Closed");
+      console.log(event);
     }
 
     setStep(1);
@@ -58,7 +69,7 @@ function App() {
     console.log("Random Player : " + empNo + " / " + name);
 
     return {empNo, name};
-  }
+  };
 
   const registerPlayer = (player) => {
     console.log("Register", player);
@@ -67,7 +78,8 @@ function App() {
       body: JSON.stringify(player),
       headers: { 'contentType': 'application/json' }
     });
-  }
+  };
+
   const sendReady = () => {
     console.log("Send Ready", player);
     client.current.publish({
