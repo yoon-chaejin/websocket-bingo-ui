@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import * as StompJS from '@stomp/stompjs';
 import Bingo from './component/Bingo.js';
+import ItemChoices from './component/ItemChoices.js';
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
 
   const connect = () => {
     client.current = new StompJS.Client({
-      brokerURL: 'wss://8080-yoonchaejin-websocketbi-e6fvsf7vzi8.ws-us106.gitpod.io/connect-websocket',
+      brokerURL: process.env.REACT_APP_WEBSOCKET_ENDPOINT,
     });
 
     client.current.activate();
@@ -120,6 +121,7 @@ function App() {
         <>
           <button onClick={sendReady}>준비</button>
           <Bingo />
+          <ItemChoices />
         </>
         : ''}
       {step === 2 ?
