@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Bingo from '../component/Bingo.js';
-import ItemChoices from '../component/ItemChoices.js';
 import WebSocketControlButtonGroup from '../component/WebSocketControlButtonGroup.js';
 
 function Main() {
